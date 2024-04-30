@@ -300,6 +300,12 @@ Params:
 
         nvme                    Alias for "pciex1" (2712 only)
 
+        nvmem_cust_rw           Allow read/write access to customer otp
+
+        nvmem_mac_rw            Allow read/write access to mac addresses otp
+
+        nvmem_priv_rw           Allow read/write access to customer private otp
+
         pcie                    Set to "off" to disable the PCIe interface
                                 (default "on")
                                 (2711 only, but not applicable on CM4S)
@@ -343,6 +349,10 @@ Params:
         sd                      Set to "off" to disable the SD card (or eMMC on
                                 non-lite SKU of CM4).
                                 (default "on")
+
+        sd_cqe                  Use to enable Command Queueing on the SD
+                                interface for faster Class A2 card performance
+                                (Pi 5 only, default "off")
 
         sd_overclock            Clock (in MHz) to use when the MMC framework
                                 requests 50MHz
@@ -826,6 +836,12 @@ Name:   balena-fin
 Info:   Overlay that enables WLAN, Bluetooth and the GPIO expander on the
         balenaFin carrier board for the Raspberry Pi Compute Module 3/3+ Lite.
 Load:   dtoverlay=balena-fin
+Params: <None>
+
+
+Name:   bcm2712d0
+Info:   Overlay encapsulating the BCM2712 C0->D0 differences
+Load:   dtoverlay=bcm2712d0
 Params: <None>
 
 
@@ -2075,6 +2091,9 @@ Params: pca9542                 Select the NXP PCA9542 device
 
         addr                    Change I2C address of the device (default 0x70)
 
+        base                    Set an explicit base value for the channel bus
+                                numbers
+
         i2c0                    Choose the I2C0 bus on GPIOs 0&1
 
         i2c_csi_dsi             Choose the I2C0 bus on GPIOs 44&45
@@ -2090,6 +2109,9 @@ Params: pca9542                 Select the NXP PCA9542 device
 
         i2c6                    Choose the I2C6 bus (configure with the i2c6
                                 overlay - BCM2711 only)
+
+        disconnect_on_idle      Force the mux to disconnect all child buses
+                                after every transaction.
 
 
 [ The i2c-mux-pca9548a overlay has been deleted. See i2c-mux. ]
@@ -2137,6 +2159,8 @@ Params: abx80x                  Select one of the ABx80x family:
         pcf2127                 Select the PCF2127 device
 
         pcf2129                 Select the PCF2129 device
+
+        pcf2131                 Select the PCF2131 device
 
         pcf85063                Select the PCF85063 device
 
@@ -2231,6 +2255,8 @@ Params: abx80x                  Select one of the ABx80x family:
         pcf2127                 Select the PCF2127 device
 
         pcf2129                 Select the PCF2129 device
+
+        pcf2131                 Select the PCF2131 device
 
         pcf85063                Select the PCF85063 device
 
@@ -4626,13 +4652,6 @@ Params: speed                   SPI bus speed (default 4500000)
         reset_pin               GPIO pin for RESET (default 25)
 
 
-Name:   sunfounder-pironman5
-Info:   Overlay for SunFounder Pironman 5
-Load:   dtoverlay=sunfounder-pironman5,<param>=<val>
-Params: ir                      Enable IR or not (on or off, default on)
-        ir_pins                 Change IR receiver pin (default 12)
-
-
 Name:   superaudioboard
 Info:   Configures the SuperAudioBoard sound card
 Load:   dtoverlay=superaudioboard,<param>=<val>
@@ -5041,6 +5060,34 @@ Params: clock-frequency         Display clock frequency (Hz)
                                 Only supported on Pi5 and CM
 
 
+Name:   vc4-kms-dsi-ili9881-5inch
+Info:   Enable the Raspberry Pi 5" ILI9881 based touchscreen panel.
+        Requires vc4-kms-v3d to be loaded.
+Load:   dtoverlay=vc4-kms-dsi-ili9881-5inch,<param>
+Params: sizex                   Touchscreen size x (default 720)
+        sizey                   Touchscreen size y (default 1280)
+        invx                    Touchscreen inverted x axis
+        invy                    Touchscreen inverted y axis
+        swapxy                  Touchscreen swapped x y axis
+        disable_touch           Disables the touch screen overlay driver
+        dsi0                    Use DSI0 and i2c_csi_dsi0 (rather than
+                                the default DSI1 and i2c_csi_dsi).
+
+
+Name:   vc4-kms-dsi-ili9881-7inch
+Info:   Enable the Raspberry Pi 7" ILI9881 based touchscreen panel.
+        Requires vc4-kms-v3d to be loaded.
+Load:   dtoverlay=vc4-kms-dsi-ili9881-7inch,<param>
+Params: sizex                   Touchscreen size x (default 720)
+        sizey                   Touchscreen size y (default 1280)
+        invx                    Touchscreen inverted x axis
+        invy                    Touchscreen inverted y axis
+        swapxy                  Touchscreen swapped x y axis
+        disable_touch           Disables the touch screen overlay driver
+        dsi0                    Use DSI0 and i2c_csi_dsi0 (rather than
+                                the default DSI1 and i2c_csi_dsi).
+
+
 Name:   vc4-kms-dsi-lt070me05000
 Info:   Enable a JDI LT070ME05000 DSI display on DSI1.
         Note that this is a 4 lane DSI device, so it will only work on a Compute
@@ -5185,6 +5232,10 @@ Params: gpiopin                 GPIO for I/O (default "4")
         pullup                  Now enabled by default (ignored)
 
 
+Name:   w1-gpio-pi5
+Info:   See w1-gpio (this is the Pi 5 version)
+
+
 Name:   w1-gpio-pullup
 Info:   Configures the w1-gpio Onewire interface module.
         Use this overlay if you *do* need a GPIO to drive an external pullup.
@@ -5192,6 +5243,10 @@ Load:   dtoverlay=w1-gpio-pullup,<param>=<val>
 Params: gpiopin                 GPIO for I/O (default "4")
         extpullup               GPIO for external pullup (default "5")
         pullup                  Now enabled by default (ignored)
+
+
+Name:   w1-gpio-pullup-pi5
+Info:   See w1-gpio-pullup (this is the Pi 5 version)
 
 
 Name:   w5500
