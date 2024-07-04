@@ -3543,6 +3543,20 @@ Info:   Force PCIe config to support 32bit DMA addresses at the expense of
 Load:   dtoverlay=pcie-32bit-dma-pi5
 Params: <None>
 
+
+Name:   pciex1-compat-pi5
+Info:   Compatibility features for pciex1 on Pi 5.
+Load:   dtoverlay=pciex1-compat-pi5,<param>=<val>
+Params: l1ss                    Enable ASPM L1 sub-state support
+        no-l0s                  Disable ASPM L0s
+        no-mip                  Revert to the MSI target in the RC, instead of
+                                the MSI-MIP peripheral. Use if a) more than 8
+                                interrupt vectors are required or b) the EP
+                                requires DMA and MSI addresses to be 32bit.
+        mmio-hi                 Move the start of outbound 32bit addresses to
+                                2GB and expand 64bit outbound space to 14GB.
+
+
 [ The pcf2127-rtc overlay has been deleted. See i2c-rtc. ]
 
 
@@ -4131,6 +4145,14 @@ Params: int_pin                 GPIO used for IRQ (default 24)
         xtal                    On-board crystal frequency (default 14745600)
 
 
+Name:   sc16is750-spi0
+Info:   Overlay for the NXP SC16IS750 UART with SPI Interface
+        Enables the chip on SPI0.
+Load:   dtoverlay=sc16is750-spi0,<param>=<val>
+Params: int_pin                 GPIO used for IRQ (default 24)
+        xtal                    On-board crystal frequency (default 14745600)
+
+
 Name:   sc16is752-i2c
 Info:   Overlay for the NXP SC16IS752 dual UART with I2C Interface
         Enables the chip on I2C1 at 0x48 (or the "addr" parameter value). To
@@ -4676,11 +4698,17 @@ Params: speed                   SPI bus speed (default 4500000)
         reset_pin               GPIO pin for RESET (default 25)
 
 
+Name:   sunfounder-pipower3
+Info:   Overlay for SunFounder PiPower 3
+Load:   dtoverlay=sunfounder-pipower3,<param>=<val>
+Params: poweroff_pin            Change poweroff pin (default 26)
+
+
 Name:   sunfounder-pironman5
 Info:   Overlay for SunFounder Pironman 5
 Load:   dtoverlay=sunfounder-pironman5,<param>=<val>
 Params: ir                      Enable IR or not (on or off, default on)
-        ir_pins                 Change IR receiver pin (default 12)
+        ir_pins                 Change IR receiver pin (default 13)
 
 
 Name:   superaudioboard
@@ -4983,6 +5011,10 @@ Params: clock-frequency         Display clock frequency (Hz)
                                 Set the default brightness. Normal range 1-16.
                                 (default 16).
         rotate                  Display rotation {0,90,180,270} (default 0)
+        rgb-order               Allow override of RGB order from DPI.
+                                Options for vc4 are "rgb", "bgr", "grb", and
+                                "brg". Other values will be ignored.
+
 
 
 Name:   vc4-kms-dpi-hyperpixel2r
