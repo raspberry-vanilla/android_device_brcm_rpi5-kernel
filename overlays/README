@@ -171,21 +171,21 @@ Params:
         button_debounce         Set the debounce delay (in ms) on the power/
                                 shutdown button (default 50ms)
 
-        cam0_reg                Enables CAM 0 regulator.
-                                Only required on CM1 & 3.
+        cam0_reg                Controls CAM 0 regulator.
+                                Disabled by default on CM1 & 3.
+                                Enabled by default on all other boards.
 
         cam0_reg_gpio           Set GPIO for CAM 0 regulator.
-                                Default 31 on CM1, 3, and 4S.
-                                Default of GPIO expander 5 on CM4, but override
-                                switches to normal GPIO.
+                                NB override switches to the normal GPIO driver,
+                                even if the original was on the GPIO expander.
 
-        cam1_reg                Enables CAM 1 regulator.
-                                Only required on CM1 & 3.
+        cam1_reg                Controls CAM 1 regulator.
+                                Disabled by default on CM1 & 3.
+                                Enabled by default on all other boards.
 
         cam1_reg_gpio           Set GPIO for CAM 1 regulator.
-                                Default 3 on CM1, 3, and 4S.
-                                Default of GPIO expander 5 on CM4, but override
-                                switches to normal GPIO.
+                                NB override switches to the normal GPIO driver,
+                                even if the original was on the GPIO expander.
 
         cam0_sync               Enable a GPIO to reflect frame sync from CSI0,
                                 going high on frame start, and low on frame end.
@@ -378,9 +378,9 @@ Params:
                                 non-lite SKU of CM4).
                                 (default "on")
 
-        sd_cqe                  Use to enable Command Queueing on the SD
-                                interface for faster Class A2 card performance
-                                (Pi 5 only, default "off")
+        sd_cqe                  Set to "off" to disable Command Queueing if you
+                                have an incompatible Class A2 SD card
+                                (Pi 5 only, default "on")
 
         sd_overclock            Clock (in MHz) to use when the MMC framework
                                 requests 50MHz
@@ -1708,6 +1708,33 @@ Params: gpio_pin                GPIO pin to trigger on (default 3)
                                 (default 100)
 
 
+Name:   hd44780-i2c-lcd
+Info:   Configures an HD44780 compatible LCD display connected via a PCF8574 as
+        is often found as a backpack interface for these displays.
+Load:   dtoverlay=hd44780-i2c-lcd,<param>=<val>
+Params: addr                    I2C address of PCF8574
+        pin_d4                  GPIO pin for data pin D4 (default 4)
+
+        pin_d5                  GPIO pin for data pin D5 (default 5)
+
+        pin_d6                  GPIO pin for data pin D6 (default 6)
+
+        pin_d7                  GPIO pin for data pin D7 (default 7)
+
+        pin_en                  GPIO pin for "Enable" (default 2)
+
+        pin_rs                  GPIO pin for "Register Select" (default 0)
+
+        pin_rw                  GPIO pin for R/W select (default 1)
+
+        pin_bl                  GPIO pin for enabling/disabling the display
+                                backlight. (default 3)
+
+        display_height          Height of the display in characters (default 2)
+
+        display_width           Width of the display in characters (default 16)
+
+
 Name:   hd44780-lcd
 Info:   Configures an HD44780 compatible LCD display. Uses 4 gpio pins for
         data, 2 gpio pins for enable and register select and 1 optional pin
@@ -1728,9 +1755,9 @@ Params: pin_d4                  GPIO pin for data pin D4 (default 6)
         pin_bl                  Optional pin for enabling/disabling the
                                 display backlight. (default disabled)
 
-        display_height          Height of the display in characters
+        display_height          Height of the display in characters (default 2)
 
-        display_width           Width of the display in characters
+        display_width           Width of the display in characters (default 16)
 
 
 Name:   hdmi-backlight-hwhack-gpio
@@ -1745,6 +1772,13 @@ Params: gpio_pin                GPIO pin used (default 17)
                                 switched on when the wire goes low.
                                 Leave the default (value 0) if the backlight
                                 expects a high to switch it on.
+
+
+Name:   hifiberry-adc
+Info:   Configures the HifiBerry ADC audio card
+Load:   dtoverlay=hifiberry-adc,<param>=<val>
+Params: leds_off                If set to 'true' the onboard indicator LED
+                                is switched off at all times.
 
 
 Name:   hifiberry-amp
@@ -2606,6 +2640,12 @@ Params: <None>
 Name:   i2s-gpio28-31
 Info:   move I2S function block to GPIO 28 to 31
 Load:   dtoverlay=i2s-gpio28-31
+Params: <None>
+
+
+Name:   i2s-master-dac
+Info:   Configures a generic I2S DAC soundcard that acts as a clock master.
+Load:   dtoverlay=i2s-master-dac
 Params: <None>
 
 
